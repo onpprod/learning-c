@@ -1,54 +1,101 @@
 #include <stdio.h>
-void input_int(const char* text , int* address);
+#include <stdlib.h>
 
-int main() {
+// Definição da estrutura do nó da lista ligada
+struct Node {
+    int data;
+    struct Node* next;
+};
 
-    int choose  = -1;
-    while (choose != 0)
-    {    
-        printf("O que voce deseja fazer: \n");
-        printf("1) Converter velocidade\n");
-        printf("2) Somar A + B\n");
-        printf("3) Contar\n");
-        printf("0) Sair\n");
-        scanf("%d", &choose);
+// Função para criar um novo nó
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    return node;
+}
 
-        switch (choose)
+// Função para imprimir a lista ligada
+void printList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+void addElem(struct Node* novo_elemento, struct Node* head){
+    int status = 0;
+    
+    struct Node* pt = head;
+    struct Node* pt2;
+
+    while(1)
+    {
+        if(novo_elemento->data > pt->data)
         {
-        case 1:
-            float velocidade;
-            printf("Digite uma velocidade: ");
-            scanf("%f",&velocidade);
-            velocidade = velocidade/1.61;
-            printf("Nova velocidade %f \n",velocidade);
-            break;
-
-        case 2:
-            int a = 0;
-            int b = 0;
-            input_int("Inserir valor de A: ", &a);
-            input_int("Inserir valor de B: ", &b);
-            printf("Soma = %d\n",a+b);
-            break;
-        
-        case 3:
-            int count = 0;
-            input_int("Quantas vezes contar? ", &count);
-            for(int i = 0; i < count; i++){
-                printf("Contagem %d.\n",i+1);
+            status = 1;
+            pt2 = pt;
+            pt = pt->next;
+            continue;
+        }
+        else
+        {
+            novo_elemento->next = pt;
+            if(status){
+                pt2->next = novo_elemento;
             }
-            break;
-        
-        default:
+            else{
+                *pt = novo_elemento;                                
+            }
             break;
         }
     }
+}
+
+
+int main() {
+    // Criando os nós da lista ligada
+    struct Node* head = newNode(2);
+    struct Node* a = newNode(3);
+    struct Node* b = newNode(4);
+    struct Node* c = newNode(10);
+
+    struct Node* new = newNode(1);
+    struct Node* new2 = newNode(8);
+
+    struct Node** primeiro = head;
+    
+
+    // Ligando os nós
+    head->next = a;
+    a->next = b;
+    b->next = c;
+
+    // Imprimindo a lista ligada
+    printf("Lista ligada: ");
+    printList(primeiro);
+
+    addElem(new, primeiro);
+
+    printf("Lista ligada: ");
+    printList(primeiro);
+    addElem(new2, primeiro);
+
+    printf("Lista ligada: ");
+    printList(primeiro);
+
+
+
+    // Lembre-se de liberar a memória alocada
+    free(head);
+    free(a);
+    free(b);
+    free(c);
+    free(new);
+    free(new2);
+    free(primeiro);
 
     return 0;
 }
-
-void input_int(const char* text , int* address){
-    printf("%s", text);
-    scanf("%d", address);
-}
-
