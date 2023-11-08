@@ -31,13 +31,30 @@ void enqueue(){
     }
 }
 
+void dequeue(){
+    
+}
+
 int main(){
 
-    lista_elementos();
+    int entrada;
 
-    enqueue();
-    enqueue();
-    enqueue();
+    do{
+        printf("Entrada: ");
+        scanf("%d",&entrada);
+
+        switch (entrada)
+        {
+        case 0:
+            lista_elementos();
+            break;
+        case 1:
+            enqueue();
+        
+        default:
+            break;
+        }
+    }while (entrada!=-1);
 
     return 0;
 }
